@@ -58,3 +58,8 @@ defmodule Learn.Patron do
 
   def schema, do: @schema
 end
+
+defimpl Learn.Utils.Eq, for: Learn.Patron do
+  def eq?(%Learn.Patron{id: id1}, %Learn.Patron{id: id2}), do: id1 == id2
+  def not_eq?(%Learn.Patron{id: id1}, %Learn.Patron{id: id2}), do: id1 != id2
+end
