@@ -21,18 +21,38 @@ defmodule Learn.Patron do
   @enforce_keys Zoi.Struct.enforce_keys(@schema)
   defstruct Zoi.Struct.struct_fields(@schema)
 
-  @new_opts_schema @schema.fields |> Zoi.keyword(coerce: true, unrecognized_keys: :error)
-  @type new_opts_t :: unquote(Zoi.type_spec(@new_opts_schema))
+  @opts_schema @schema.fields |> Zoi.keyword(coerce: true, unrecognized_keys: :error)
+  @type opts_t :: unquote(Zoi.type_spec(@opts_schema))
 
-  @spec new(binary(), new_opts_t()) :: {:ok, t()} | {:error, Zoi.Errors.t()}
+  @spec new(binary(), opts_t()) :: {:ok, t()} | {:error, Zoi.Errors.t()}
   def new(name, opts \\ []) do
     merged_opts =
       opts
       |> Keyword.put(:name, name)
       |> Keyword.put_new(:id, :erlang.unique_integer([:positive]))
 
-    with {:ok, parsed} <- Zoi.parse(@new_opts_schema, merged_opts, coerce: true) do
+    with {:ok, parsed} <- Zoi.parse(@opts_schema, merged_opts, coerce: true) do
       {:ok, struct(__MODULE__, parsed)}
+    end
+  end
+
+  @change_opts_fields @opts_schema.fields
+                      |> Keyword.drop([:id])
+                      |> Keyword.new(fn {field, schema} -> {field, Zoi.optional(schema)} end)
+
+  @change_opts_schema Zoi.keyword(
+                        @change_opts_fields,
+                        coerce: @opts_schema.coerce,
+                        unrecognized_keys: @opts_schema.unrecognized_keys
+                      )
+  @type change_opts_t :: unquote(Zoi.type_spec(@change_opts_schema))
+
+  @spec change(t(), change_opts_t()) :: {:ok, t()} | {:error, Zoi.Errors.t()}
+  def change(%__MODULE__{} = patron, changes) do
+    safe_changes = Keyword.drop(changes, [:id])
+
+    with {:ok, parsed} <- Zoi.parse(@change_opts_schema, safe_changes, coerce: true) do
+      {:ok, struct(patron, parsed)}
     end
   end
 
