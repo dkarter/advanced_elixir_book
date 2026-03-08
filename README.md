@@ -1,21 +1,18 @@
-# Learn
+# Advanced Functional Programming with Elixir
 
-**TODO: Add description**
+This repo is where I practice and improve upon examples from the book:
 
-## Installation
+[Advanced Functional Programming with Elixir](https://pragprog.com/titles/jkelixir/advanced-functional-programming-with-elixir/) by Joseph Koski
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `learn` to your list of dependencies in `mix.exs`:
+The book provides a large code example repository and livebook - but everything
+is typed up which hurts learning in my opinion.
 
-```elixir
-def deps do
-  [
-    {:learn, "~> 0.1.0"}
-  ]
-end
-```
+The best way to learn is by typing stuff by hand and coming up with
+improvements that better fit my style and tools/techniques I already use.
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/learn>.
+## Improvements so far
 
+1. Use [Zoi](https://hexdocs.pm/zoi/readme.html) to create types, validation, struct fields - instead of bare structs with no validation
+2. Rename `make` to `new` on structs
+3. Re-use struct schema for opts validation
+4. Default to using named arguments for functions (this is not great to read `FunPark.Patron.make("Alice", 15, 120, fast_passes: [fast_pass])`)
