@@ -30,4 +30,6 @@ defmodule Learn.FastPass do
       {:ok, struct(__MODULE__, parsed)}
     end
   end
+
+  def schema, do: @schema
 end

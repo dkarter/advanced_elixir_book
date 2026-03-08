@@ -18,8 +18,6 @@ defmodule Learn.Ride do
   @enforce_keys Zoi.Struct.enforce_keys(@schema)
   defstruct Zoi.Struct.struct_fields(@schema)
 
-  def schema, do: @schema
-
   @new_opts_schema @schema.fields |> Zoi.keyword(coerce: true, unrecognized_keys: :error)
   @type new_opts_t :: unquote(Zoi.type_spec(@new_opts_schema))
 
@@ -34,4 +32,6 @@ defmodule Learn.Ride do
       {:ok, struct(__MODULE__, parsed)}
     end
   end
+
+  def schema, do: @schema
 end
