@@ -33,3 +33,10 @@ defmodule Learn.FastPass do
 
   def schema, do: @schema
 end
+
+defimpl Learn.Utils.Eq, for: Learn.FastPass do
+  def eq?(%Learn.FastPass{time: t1}, %Learn.FastPass{time: t2}), do: Learn.Utils.Eq.eq?(t1, t2)
+
+  def not_eq?(%Learn.FastPass{time: t1}, %Learn.FastPass{time: t2}),
+    do: Learn.Utils.Eq.not_eq?(t1, t2)
+end
