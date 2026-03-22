@@ -35,3 +35,13 @@ defmodule Learn.Ride do
 
   def schema, do: @schema
 end
+
+defimpl Learn.Utils.Ord, for: Learn.Ride do
+  alias Learn.Utils.Ord
+  alias Learn.Ride
+
+  def lt?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.lt?(v1, v2)
+  def le?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.le?(v1, v2)
+  def gt?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.gt?(v1, v2)
+  def ge?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.ge?(v1, v2)
+end
