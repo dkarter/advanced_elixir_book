@@ -33,6 +33,26 @@ defmodule Learn.Ride do
     end
   end
 
+  @change_opts_fields @new_opts_schema.fields
+                      |> Keyword.drop([:id])
+                      |> Keyword.new(fn {field, schema} -> {field, Zoi.optional(schema)} end)
+
+  @change_opts_schema Zoi.keyword(
+                        @change_opts_fields,
+                        coerce: @new_opts_schema.coerce,
+                        unrecognized_keys: @new_opts_schema.unrecognized_keys
+                      )
+  @type change_opts_t :: unquote(Zoi.type_spec(@change_opts_schema))
+
+  @spec change(t(), change_opts_t()) :: {:ok, t()} | {:error, Zoi.Errors.t()}
+  def change(%__MODULE__{} = ride, changes) do
+    safe_changes = Keyword.drop(changes, [:id])
+
+    with {:ok, parsed} <- Zoi.parse(@change_opts_schema, safe_changes, coerce: true) do
+      {:ok, struct(ride, parsed)}
+    end
+  end
+
   def schema, do: @schema
 end
 
