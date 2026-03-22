@@ -53,6 +53,10 @@ defmodule Learn.Ride do
     end
   end
 
+  def sort(rides) do
+    Learn.Utils.List.sort(rides)
+  end
+
   def schema, do: @schema
 end
 
